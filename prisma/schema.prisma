@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  contacts  Contact[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Contact {
+  id           String         @id @default(uuid())
+  firstName    String         @map("first_name")
+  lastName     String?        @map("last_name")
+  emails       String[]       
+  phoneNumbers String[]       @map("phone_numbers")
+  company      String?
+  notes        String?
+  userId       String         @map("user_id")
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deletedAt    DateTime?      @map("deleted_at") 
+  mergeHistory MergeHistory[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([emails])
+  @@index([phoneNumbers])
+}
+
+model MergeHistory {
+  id             String   @id @default(uuid())
+  contactId      String   @map("contact_id")
+  contact        Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  mergedData     Json     @map("merged_data") 
+  mergedAt       DateTime @default(now()) @map("merged_at")
+}
