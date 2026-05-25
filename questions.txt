@@ -1,0 +1,19 @@
+If 3 contacts overlap — Contact A, B, C — and you merge into A and delete B and C, what happens to B and C's unique emails and phone numbers?
+Expected: They are lost data
+If you simply follow the baseline logic of merging only the incoming request payload data into Contact A, then yes, B and C's unique data will be permanently lost. 
+
+2) If I update a contact's email or phone  to one that already exists on another contact, does merge happen? 
+No , As Per Practical Document only merge logic in Create Time so not do this.
+
+How would you prevent two simultaneous requests from creating duplicate contacts instead of merging? 
+--> await use in PostgresSQL query or use Redis
+
+What is the difference between Prisma and TypeORM? Why did you choose Prisma? 
+Prisma 
+--> Schema-First
+--> Completely auto-generated client from database state (means push db and generate db table)
+TypeORM
+--> Code-first (make first entity)
+--> manually class property declare 
+
+Array handling and Speed of Delivery in db that's whay we choose Prisma.
